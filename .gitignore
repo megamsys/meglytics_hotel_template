@@ -15,3 +15,23 @@ project/plugins/project/
 # Scala-IDE specific
 .scala_dependencies
 .worksheet
+
+# Ignore Play! working directory #
+.gradle
+build/
+eclipse
+lib
+log
+logs
+modules
+precompiled
+project/project
+project/target
+target
+tmp
+test-result
+server.pid
+*.iml
+*.eml
+*.log
+/bin/
