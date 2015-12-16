@@ -80,7 +80,8 @@ private def getFeedback(c: RDD[String]): scala.collection.Map[String, Long] = {
   val header = new Formatter(data.take(1)(0))
 
   val feedback = data.filter(line => header(line, "id") != "id").map(row => header(row, "overall_feedback_score"))
-  feedback.countByValue
+
+(feedback.countByValue) + ("total" -> feedback.count())
 
 }
 
@@ -114,17 +115,26 @@ def roomPreferred(d: RDD[String]): scala.collection.Map[String, Long] = {
   def servicesPreferred(d: RDD[String]): scala.collection.Map[String,Long] = {
 
     val services = getServices(d)
+    println(services)
+    //println(services.map(x => x/1000 * 100))
     return services
   }
 
-//uc4
-   def happyCustomers(d: RDD[String]) = {
-     //take a list of scores - countbyValue
-     //get [1 to 5] count and [5 to 10] count
+ //uc4
+   def happyCustomers(d: RDD[String]): scala.collection.Map[String, Double] = {
+
      //1 - very poor, Hate this place, 2 - poor, i don think i ll come ever, 3 - ok(might return), 4- loved it,  5 - Hell yeah, I am coming here!
 
-     val fb = getFeedback(d)
-     println(fb)
+     val feedback = getFeedback(d)
+     val total = feedback.get("total")
+     val will_not_return = (feedback.get("1") ++ feedback.get("2")).reduceOption(_ + _).map(x => x/(1000).toDouble * 100)
+     val will_return = (feedback.get("4") ++ feedback.get("5")).reduceOption(_ + _).map(x => x/(1000).toDouble * 100)
+     val might_return = feedback.get("3").map(x => x/(1000).toDouble * 100)
+
+
+     val customers = Map("total" -> total.get.toDouble, "will_return" -> will_return.get.toDouble, "will_not_return" -> will_not_return.get.toDouble, "might_return" -> might_return.get.toDouble)
+
+     return customers
 
   }
 
@@ -136,10 +146,6 @@ def roomPreferred(d: RDD[String]): scala.collection.Map[String, Long] = {
         Header(id, name, phone, address, origin_country, room_type, checkin, checkout, roomservices, hotelservices, cost, method_payment, prevous_customer, overall_feedback_score)
     })
   }
-
-
-
-
 
 }
 

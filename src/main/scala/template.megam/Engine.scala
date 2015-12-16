@@ -20,7 +20,7 @@ object HotelAnalysisResult extends HotelTemplate {
     //usecase1
 
     val csvData: RDD[String] = parseData(sc)
-    
+
     val customer: scala.collection.Map[String, Long] = customercount(csvData)
     println(customer)
     println("=============================")
@@ -41,6 +41,7 @@ object HotelAnalysisResult extends HotelTemplate {
     //usecase4
     val feebback = happyCustomers(csvData)
 
-  }
+
+}
 
 }
