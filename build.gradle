@@ -1,18 +1,19 @@
+apply plugin: 'java'
 apply plugin: 'scala'
 
-repositories{
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.11.7'
+    compile "org.apache.spark:spark-core_2.11:1.5.1"
+    compile 'com.typesafe:config:1.3.0'
+    compile "org.apache.spark:spark-sql_2.11:1.5.2"
+    compile "spark.jobserver:job-server-api_2.11:0.6.1"
+    compile "spark.jobserver:job-server-extras_2.11:0.6.1"
+}
+
+repositories {
+    maven {
+        url "https://dl.bintray.com/spark-jobserver/maven"
+    }
     mavenCentral()
-    mavenLocal()
-}
-
-dependencies{
-    compile 'org.slf4j:slf4j-api:1.7.5'
-    compile "org.scala-lang:scala-library:2.10.1"
-    testCompile "junit:junit:4.11"
-}
-
-task run(type: JavaExec, dependsOn: classes) {
-    main = 'HotelCount'
-    classpath sourceSets.main.runtimeClasspath
-    classpath configurations.runtime
 }
