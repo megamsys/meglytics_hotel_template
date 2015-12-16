@@ -41,7 +41,7 @@ object Date {
 trait HotelRDDBuilder {
 
   //get ceph url from ENV/conf
-  val path = "/home/yeshwanth/Downloads/hotel_dataset.csv"
+  val path = "/root/hotel_dataset.csv"
 
 private def splitter(c: RDD[String]): List[Serializable] = {
   val data = c.map(_.split(",").map(elem => elem.trim))
