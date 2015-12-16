@@ -22,7 +22,7 @@ trait HotelTemplate extends spark.jobserver.SparkJob with spark.jobserver.NamedR
 object HotelAnalysisResult extends HotelTemplate {
 
 
-  override def runJob(sc: SparkContext, config: Config) = {
+  override def runJob(sc: SparkContext, config: Config): Any = {
 //usecase1
 
     val csvData: RDD[String] = parseData(sc)
@@ -35,16 +35,17 @@ object HotelAnalysisResult extends HotelTemplate {
   //  println(yearRDD)
 
 //usecase3
-val services: scala.collection.Map[String, Long] = servicesPreferred(csvData)
-println(services)
-
-println("========================")
-services.foreach(println)
+    val services: scala.collection.Map[String, Long] = servicesPreferred(csvData)
 
 //usecase4
-val feebback = happyCustomers(csvData)
+    val feedback = happyCustomers(csvData)
 
-  }
+    val final_data = Map("Services" -> services, "Feedback" -> feedback)
+
+   return final_data
+
+
+}
 
 
 
