@@ -41,7 +41,7 @@ object Date {
 trait HotelRDDBuilder {
 
   //get ceph url from ENV/conf
-  val path = "/home/yeshwanth/Downloads/hotel_dataset.csv"
+  val path = "/tmp/hotel_dataset.csv"
 
 private def splitter(c: RDD[String]): List[Serializable] = {
   val data = c.map(_.split(",").map(elem => elem.trim))
@@ -58,6 +58,12 @@ private def splitter(c: RDD[String]): List[Serializable] = {
     dates
   }
 
+private def getRooms(c: RDD[String]): scala.collection.Map[String, Long] = {
+ val data = c.map(_.split(",").map(elem => elem.trim))
+ val header =new Formatter(data.take(1)(0))
+ val rooms = data.filter(line => header(line, "id") != "id").map(row => header(row, "room_type"))
+ rooms.countByValue
+}
 
 private def getServices(c: RDD[String]): scala.collection.Map[String, Long] = {
 //returns a map of all list of services
@@ -91,7 +97,19 @@ private def getFeedback(c: RDD[String]): scala.collection.Map[String, Long] = {
         case Some(d) => d.year
       }
   }
+  //usecase 1
 
+  def customercount(d: RDD[String]): scala.collection.Map[String,Long] = {
+    val count = dateBuilder(d)
+    val customer = count.countByValue
+    return customer
+  }
+//usecase2
+def roomPreferred(d: RDD[String]): scala.collection.Map[String, Long] = {
+
+  val room_preference = getRooms(d)
+  return room_preference
+}
 
   //uc3
   def servicesPreferred(d: RDD[String]): scala.collection.Map[String,Long] = {
