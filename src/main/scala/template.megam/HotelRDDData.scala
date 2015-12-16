@@ -13,8 +13,8 @@ case class Header(
   address: String,
   origin_country: String,
   room_type: String,
-  check_in: String,
-  check_out: String,
+  checkin: String,
+  checkout: String,
   room_services: String,
   hotel_services: String,
   cost: String,
@@ -41,7 +41,7 @@ object Date {
 trait HotelRDDBuilder {
 
   //get ceph url from ENV/conf
-  val path = "/tmp/hotel_data.csv"
+  val path = "/tmp/hotel_dataset.csv"
 
   private def getDates(c: RDD[String]): RDD[String] = {
 
@@ -65,8 +65,8 @@ trait HotelRDDBuilder {
 
     val filedata = sc.textFile(path)
     filedata.map(_.split(',') match {
-      case Array(id, name, phone, address, origin_country, room_type, check_in, check_out, roomservices, hotelservices, cost, method_payment, prevous_customer, overall_feedback_score) =>
-        Header(id, name, phone, address, origin_country, room_type, check_in, check_out, roomservices, hotelservices, cost, method_payment, prevous_customer, overall_feedback_score)
+      case Array(id, name, phone, address, origin_country, room_type, checkin, checkout, roomservices, hotelservices, cost, method_payment, prevous_customer, overall_feedback_score) =>
+        Header(id, name, phone, address, origin_country, room_type, checkin, checkout, roomservices, hotelservices, cost, method_payment, prevous_customer, overall_feedback_score)
     })
   }
 

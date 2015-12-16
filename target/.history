@@ -23,3 +23,24 @@ compile
 package
 clean
 package
+curl --data-binary @target/scala-2.10/meglytics-templates_2.10-1.0.jar 103.56.92.22:8090/jars/example
+clean
+compile
+sbt package
+curl --data-binary @target/scala-2.10/meglytics-templates_2.10-1.0.jar 103.56.92.22:8090/jars/example
+clean
+curl --data-binary @target/scala-2.10/meglytics-templates_2.10-1.0.jar 103.56.92.22:8090/jars/example
+clean
+curl -d "input.string = "exam" '192.168.0.100:8090/jobs?appName=yy&classPath=template.megam.HotelAnalysisResult'
+compile
+run
+clean
+compile
+run
+curl '192.168.0.100:8090/jars'
+clean
+compile
+run
+clean
+package
+compile
