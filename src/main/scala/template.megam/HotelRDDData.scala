@@ -41,13 +41,7 @@ object Date {
 trait HotelRDDBuilder {
 
   //get ceph url from ENV/conf
-  val path = "/tmp/hotel_dataset.csv"
-
-private def splitter(c: RDD[String]): List[Serializable] = {
-  val data = c.map(_.split(",").map(elem => elem.trim))
-  val header = new Formatter(data.take(1)(0))
-  return List(data, header)
-}
+  val path = "/root/hotel_dataset.csv"
 
   private def getDates(c: RDD[String]): RDD[String] = {
 
@@ -89,7 +83,7 @@ private def getFeedback(c: RDD[String]): scala.collection.Map[String, Long] = {
     val csvData = sc.textFile(path)
     return csvData
   }
-  //uc1
+  //usecase1
   def dateBuilder(d: RDD[String]): RDD[String] = {
     val dates = getDates(d)
     dates.map(Date.eachRow).
@@ -104,26 +98,23 @@ private def getFeedback(c: RDD[String]): scala.collection.Map[String, Long] = {
     val customer = count.countByValue
     return customer
   }
-//usecase2
-def roomPreferred(d: RDD[String]): scala.collection.Map[String, Long] = {
 
-  val room_preference = getRooms(d)
-  return room_preference
+  //usecase2
+  def roomPreferred(d: RDD[String]): scala.collection.Map[String, Long] = {
+
+   val room_preference = getRooms(d)
+   return room_preference
 }
 
-  //uc3
+  //usecase3
   def servicesPreferred(d: RDD[String]): scala.collection.Map[String,Long] = {
 
     val services = getServices(d)
-    println(services)
-    //println(services.map(x => x/1000 * 100))
     return services
   }
 
- //uc4
+ //usecase4
    def happyCustomers(d: RDD[String]): scala.collection.Map[String, Double] = {
-
-     //1 - very poor, Hate this place, 2 - poor, i don think i ll come ever, 3 - ok(might return), 4- loved it,  5 - Hell yeah, I am coming here!
 
      val feedback = getFeedback(d)
      val total = feedback.get("total")
